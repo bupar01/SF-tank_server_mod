@@ -1,0 +1,132 @@
+German,Armoured Cars,Sd.Kfz. 251/10 Ausf. C (Hanomags),wer_mapc2
+German,Armoured Cars,Sdkfz 232 (6-rad.) reconnaissance vehicle,wer_sdkfz232
+German,Armoured Cars,Sdkfz 251/9 ausf. D Kanonenwagen (late),wer_sdkfz251
+German,Armoured Cars,Sdkfz 7/1 haltrack FLaK carrier,wer_sdkfz7
+German,BT,BT-42 Finnish redesigned BT-7 (JCM only),wer_jcmtann1
+German,Elefant,Elefant,wer_hgun2
+German,Elefant,Ferdinand,wer_hspn2
+German,Flak,8.8 cm Flak 36 (Flugzeugabwehrkanone) (JCM only),wer_flak36
+German,Flak,ATG 8.8cm PAK 43/41,wer_pak43
+German,Jagdpanther,Jagdpanther (camo_net),wer_hspn5
+German,Jagdpanther,Jagdpanther (dark-green),wer_hspn4
+German,Jagdpanther,Jagdpanther (desert),wer_hspn7
+German,Jagdpanther,Jagdpanther (tri-color1LOD),wer_hspn3
+German,Jagdpanther,Jagdpanther (zimmerit),wer_hspn9
+German,Marder,Marder IIIAusf.H,wer_mspn7
+German,Marder,Sd.Kfz131Marder II (early),wer_lspg6a
+German,Marder,Sd.Kfz131Marder II (late),wer_lspg6b
+German,Marder,Sd.Kfz132Marder II,wer_lspg5
+German,Prototypes,E-100 (JCM only),wer_e100
+German,Prototypes,E-79 Schwarzwolf (Game Tank) (JCM only),wer_e79
+German,Prototypes,Pz.VIII Maus (JCM only),wer_maus
+German,dummy,Pz.VIII Maus (JCM only),wer_shtann1
+German,PZ2/3,Pz.IIIAusf.J (cz),wer_mtank1
+German,PZ2/3,Pz.IIIAusf.J (czKWK38),wer_mtankcz1
+German,PZ2/3,Pz.IIIAusf.J (lg),wer_mtank2
+German,PZ2/3,Pz.IIIAusf.J (lg/cz),wer_mtank3
+German,PZ2/3,Pz.IIIAusf.J (lgKWK39),wer_mtanklg1
+German,PZ2/3,Pz.Kpfw.II Ausf L LUCHS,wer_ltann1
+German,PZ2/3,Pz.Kpfw.II Ausf L LUCHS II,wer_ltann1a
+German,PZ2/3,Pz.Kpfw.IIAusf.C,wer_ltank1
+German,PZ38t,ATSPG PanzerJager1 (early/later),wer_lspg1
+German,PZ38t,Pz38 (t),wer_ltann2
+German,PZ38t,PzBef38 (t),wer_pz38
+German,PZ38t,PzBef38 (t),wer_ltann9
+German,PZ38t,Sd.Kfz.138/2 Hetzer,wer_mspn1
+German,PZ4,Pz.IVAusf.F1,wer_htank2
+German,PZ4,Pz.IVAusf.F1 (F2),wer_htank3
+German,PZ4,Pz.IVAusf.F2,wer_htank1
+German,PZ4,Pz.IVAusf.H,wer_htank5
+German,PZ4,Sd.Kfz.166 Brummbar (early),wer_hspn1
+German,PZ5,Pz.V Ersatz M10,wer_htann15
+German,PZ5,Pz.VAusf.A Panther ,wer_panthera
+German,PZ5,Pz.VAusf.D Panther ,wer_htann6
+German,PZ5,Pz.VG (dark) Panther ,wer_pantherg_ga
+German,PZ5,Pz.VG (green) Panther ,wer_pantherg_gb
+German,PZ5,Pz.VG Panther ,wer_pantherg
+German,PZ6,Pz.VIAusf.B Tiger II ,wer_htann2
+German,PZ6,Pz.VIAusf.B Tiger II (dark),wer_pz6ab
+German,PZ6,Pz.VIAusf.H Tiger I ,wer_htann1
+German,PZ6,Pz.VIAusf.H Tiger I (late),wer_pz6
+German,PZ6,Pz.VIAusf.H Tiger I (SS),wer_htann7
+German,PZ6,Pz.VIAusf.H1 TigerH1,wer_htann17
+German,PZ6,Sd.Kfz186 Jagdtiger ,wer_hspg1
+German,PZ6,VK 45.01(P) Porsche Tiger 1942/3 (JCM only),wer_jcmtann4
+German,PZ6,VK 45.01(P) Porsche Tiger 1942/3 (JCM only),wer_vk4501
+German,StuG,Aussault SPG StugIII Ausf.C/D,wer_mspg1
+German,StuG,StugIIIAusf.F (early),wer_mspn2
+German,StuG,StugIIIAusf.F (later),wer_mspn3
+German,StuG,StugIIIAusf.G,wer_mspn4
+German,StuG,StugIIIAusf.G (saukopf),wer_mspn5
+German,StuG,StugIIIAusf.G (zimmerit),wer_mspn6
+German,T,Pz.Kfw T-34/747(r) (Captured T34/76),wer_platoon_htank11
+Japan,Chi,Chi-Ha Type 97 mod.37,jap_mtank1
+Soviet,A,Churchill,rkka_htang1
+Soviet,A,Matilda,rkka_htank1
+Soviet,A,Valentine,rkka_mtank2
+Soviet,BA,BA-10,rkka_ba10
+Soviet,BA,BA-64,rkka_lacar1
+Soviet,BT,BT-5 mod. 1934,rkka_bt5
+Soviet,dummy,BT-5 mod. 1934,rkka_platoon_ltank7
+Soviet,BT,BT-7 mod. 1937,rkka_bt7
+Soviet,IS,IS-2,rkka_htann1
+Soviet,IS,JS-3,rkka_is3
+Soviet,IS,JSU-122 1LOD,rkka_platoon_nrspg1
+Soviet,KV,KV-1 (F-32 and ZIS-5),rkka_htank2
+Soviet,KV,KV-1 (fictional/ekran),rkka_htank20
+Soviet,KV,KV-1 (ZIS-5 gun),rkka_htank3
+Soviet,KV,KV-1 mod. 1941 (F-32),rkka_kv1d
+Soviet,KV,KV-1 mod. 1941 (ZIS-5),rkka_kv1a
+Soviet,KV,KV-1e (ekran/rounded turret 1LOD)),rkka_kv1b
+Soviet,KV,KV-1S,rkka_platoon_htang3
+Soviet,KV,KV-2,rkka_htann2
+Soviet,KV,KV-85,rkka_kv85
+Soviet,M3,M3 Lee (Random Barrel) ,rkka_mtann43a
+Soviet,M3,M3 Lee (Short Barrel) ,rkka_mtann43b
+Soviet,Sherman,M4A2/76 Sherman,rkka_mtann41rka
+Soviet,SU,SU-100,rkka_mspg3
+Soviet,SU,SU-122,rkka_mspg1
+Soviet,SU,SU-152,rkka_hspg1
+Soviet,SU,SU-152a,rkka_hspg3
+Soviet,SU,SU-76,rkka_mspg6
+Soviet,SU,SU-85,rkka_mspg2
+Soviet,T,T-26 (BT-5),rkka_ltank2
+Soviet,T,T-28E,rkka_platoon_mtann3
+Soviet,T,T-28E (A-10),rkka_radztank1
+Soviet,T,T-34 mod. 1941 (pl. No.183),rkka_mtank1
+Soviet,T,T-34/76 mod. 1943 (UZTM),rkka_mtann3
+Soviet,T,T-34/76(STZ) mod. 1942,rkka_mtank4
+Soviet,T,T-34/85,rkka_mtann1
+Soviet,T,T-34-57,rkka_mtann5
+Soviet,T,T-35a,rkka_htank35a
+Soviet,T,T-38,rkka_ltank4
+Soviet,T,T-44,rkka_mtann30
+Soviet,T,T-60,rkka_ltank1
+Soviet,T,T-70,rkka_ltank20
+USA/GB,APC,75mm APC M3 halftrack ,usa_mapc01
+USA/GB,Centurion,Centurion A41 1943 (JCM only),wer_centurion
+USA/GB,Centurion,Centurion A41 1943 (JCM only),wer_jcmtann1
+USA/GB,Cromwell,CromwellMk.III 1943 ,gbr_mtank08
+USA/GB,Cromwell,CromwellMk.IV 1944 ,gbr_mtank07
+USA/GB,M3,M3 Grant (UK) ,gbr_mtank04
+USA/GB,M3,M3 Lee (Early UK) ,gbr_mtank02b
+USA/GB,M3,M3 Lee (Early USA) ,usa_mtank02b
+USA/GB,M3,M3 Lee (green camo USA) ,usa_mtank02d
+USA/GB,M3,M3 Lee (USA) ,usa_mtank02a
+USA/GB,M3,M3_Stuart HONEY (UK) ,gbr_ltank02a
+USA/GB,M3,M3_Stuart HONEY (USA) ,usa_ltank02a
+USA/GB,M5,M5A1Stuart (UK) ,gbr_ltank01a
+USA/GB,M5,M5A1Stuart (USA) ,usa_ltank01a
+USA/GB,Pershing,M26 Pershing ,usa_mtank01a
+USA/GB,Sherman,M36/M36B2 Jackson,usa_umspg01
+USA/GB,Sherman,M4A1-75 ShermanII (UK) ,gbr_mtank09
+USA/GB,Sherman,M4A1-76W Sherman 1942 ,usa_mtank03a
+USA/GB,Sherman,M4A1-76W Sherman 1943 ,usa_mtank03b
+USA/GB,Sherman,M4A1-76W Sherman 1944 early ,usa_mtank04a
+USA/GB,Sherman,M4A1-76W Sherman 1944 late ,usa_mtank04b
+USA/GB,Sherman,M4A2-75 (UK),gbr_mtank03a
+USA/GB,Sherman,M4A2-75 (USA),usa_mtank05a
+USA/GB,Sherman,M4A3-76 (USA VVSS),rkka_mtann41rka
+USA/GB,Sherman,M4A3-76E8 (USA HVSS E8),usa_m4a3_76_hvss
+USA/GB,Sherman,Sherman VC Firefly 1943 (UK) ,gbr_mtank06
+USA/GB,Sherman,Sherman VC Firefly 1944 (UK) ,gbr_mtank05
