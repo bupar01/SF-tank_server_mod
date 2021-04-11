@@ -1,0 +1,17 @@
+//Graviteam mission create system ver. 0.1
+
+loc_rus()
+{
+	txt_brief_Tank_Gunnery_Range() {This mission is set up to practice gunnery in Soviet tanks against stationary and moving German targets. There are Tiger tanks, all unoccuppied, at various ranges and angles from 600 to over 2000 m. There are stationary trucks, and cars as well. There is a column of German support vehicles which will move across your field of view from the left--generally along the road, though they are somewhat unpredictable. Engaging these vehicles will cause infantry to dismount, adding them to the target menu. You should have ample opportunity to practice engagement with  Armor Piercing, High Explosive, and Shrapnel rounds against a variety of targets at all normal combat ranges. To change from the T-34 to a different tank, use the Mission Editor. Open this mission, and switch your commander to a different vehicle, you might have to add another crewable tank temporarily, not sure, and then change the primary tank to another User Available tank--indicated by a * in the Division list. Then switch your commander back to the desired tank.;}
+
+}
+
+loc_eng()
+{
+
+//add text here
+//format txt_ldm_<tab name in english>() {G <text1> ; <text2>; ... <text n>; }
+//example: txt_ldm_text1() { Text string #1; }
+
+}
+
