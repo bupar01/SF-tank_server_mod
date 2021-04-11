@@ -1,0 +1,49 @@
+This utility provides the user ability to change from default tank before playing a mission without the need to go through the Mission Editor.
+Designed to be used with Tank Gunnery Range Mod but any mission script file can be modified by drag-and-drop 
+(If you have Japan Community MOD (JCM August) from 2020-08-30 installed, read note at bottom first.)
+
+Package with Tank Gunnery Range Mod (credit nodlew, original link:
+http://graviteam.com/forum/index.php?topic=529.0).
+
+Zip archive content:
+
+111-Tank Gunnery Range-Sov
+112-TSM_v01d (Tank_Server_Mod)
+
+Details in 112-TSM_v01d → docs → how_to_use_tank_server_mod.txt
+
+Tank_Server_Mod Files:
+
+1. tankid.csv - this database holds the game tank id codes that the batch file reads (no need to touch this file). If you like to browse this file, open with a text editor
+2. 0_tankid_change.bat - windows batch file to choose and switch user tank
+
+	JSGME will place the files in the root directory of the game Steel Fury - Kharkov 1942.
+
+Installation:
+============
+Place the extracted folders named above into JSGME's MODS folder (make sure there is no extra enclosing folder from the extraction).
+
+Activate both folders, preferably last, with JSGME.
+
+How to use with Tank Gunnery Range Mod
+======================================
+
+Double-click the 01_tankid_change.bat file in Steel Fury - Kharkov 1942 game root folder and follow prompts to select country, tank series and the tank model. 
+
+Make a note of the model of the replaced tank in case you want to switch back later. The command prompt window can be closed once the replacement is confirmed.
+
+Run or Restart Steel Fury and play.
+
+Tank Gunnery Range Mission is under Campaigns & Missions → User Made Missions
+
+How to use to change other mission or campaign files
+====================================================
+
+Drag-and-drop a mission or campaign script file on the 0_tankid_change.bat file. The mission or campaign script files are located in different folders under "C:\Users\bso\Downloads\SF-tank_server_mod-01d\111-Tank Gunnery Range-Sov_base_01\data\k42\loc_rus\levels\LEVELS\SCRIPTS\".
+
+Follow prompts to select country, tank series and the tank model. The command prompt window can be closed once the replacement is confirmed.
+
+A backup of the original script will be created in the same mission or campaign folder. However, this will be overwritten if changes are made again.
+
+** Special note : If you have Japan Community MOD (JCM August) from 2020-08-30 installed, an older version (v01a) of this mod has already been integrated and does not have to be separately installed. The batch file name in JCM is: 0_tankid_change.bat. Instead of the Tank Gunnery Range mission in User Made Missions, the default JCM mission is Firing Ground 1:Stug III G (training shot) in STA GMP 1.47.
+

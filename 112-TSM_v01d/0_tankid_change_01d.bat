@@ -23,8 +23,8 @@ if [%1]==[] (
 	REM Default file to process is the Tank Gunnery Range mod
 
 	REM set "textFile=%script_path%data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_users\Tank Gunnery Range_scripts.engscr"
-	if EXIST "!script_path!data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_pack_mission10\Tank Gunnery Range_scripts.engscr" (
-		set "textFile=!script_path!data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_pack_mission10\Tank Gunnery Range_scripts.engscr"
+	if EXIST "!script_path!data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_users\Tank Gunnery Range_scripts.engscr" (
+		set "textFile=!script_path!data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_users\Tank Gunnery Range_scripts.engscr"
 	)
 
 	REM First order is to make sure that file exists
