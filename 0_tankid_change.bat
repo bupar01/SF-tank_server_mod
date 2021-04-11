@@ -5,7 +5,7 @@ REM This script file is to be placed in the game directory of Steel Fury - Khark
 REM together with the tankid.csv database file
 REM Default is to work with Tank Gunnery Mod
 REM other .engscr files can be processed by drag and drop onto batch file
-REM version 01b
+REM version 01C (2017-03-09)
 
 set script_path=%~dp0
 set database=%script_path%tankid.csv
@@ -21,8 +21,10 @@ if NOT EXIST "%database%" (
 if [%1]==[] (
 	REM No file dropped, use default
 	REM Default file to process is the Tank Gunnery Range mod
-	set "textFile=%script_path%data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_users\Tank Gunnery Range_scripts.engscr"
-	echo !textFile!
+
+	REM set "textFile=%script_path%data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_users\Tank Gunnery Range_scripts.engscr"
+	set "textFile=!script_path!data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_pack_mission10\Firing ground_scripts.engscr"
+
 	REM First order is to make sure that file exists
 	if EXIST "!textFile!" (
 		goto MAIN
@@ -45,9 +47,12 @@ if [%1]==[] (
 	)
 )
 
-:RESTART
-
 :MAIN
+
+call :FIND_CURRENT_TANK_INFO
+
+
+:RESTART
 
 set /a index=0
 set /a match=0
@@ -94,7 +99,9 @@ for /F "usebackq tokens=1-3 delims=," %%p in ("%database%") do (
 	if %%p==!Chosen_COUNTRY! (
 		for /f "tokens=2 delims==" %%d in ( 'set TANK_SERIES[' ) do (
 				if %%q==%%d (
+					if NOT [%%q]==[dummy] (
 					set /a TankSeries_match=1
+					)
 				)
 		)
 		if !TankSeries_match! EQU 0 (
@@ -129,8 +136,10 @@ for /F "usebackq tokens=1,2,3 delims=," %%V in ("%database%") do (
 	REM only process items if token 1 & 2 matches
 	if %%V==!Chosen_COUNTRY! (
 		if %%W==!Chosen_TANK_SERIES! (
+			if NOT [%%W]==[dummy] (
 			set TANK_MODEL[!TankModel_index!]=%%X
 			set /a TankModel_index+=1
+			)
 		)
 	)
 )
@@ -146,7 +155,7 @@ if %errorlevel% GTR 0 (
 	cls
 	goto :TANK_MODEL_SELECT
 ) else (
-	echo TANK MODEL: !RETURN_CHOICE!
+	REM echo TANK MODEL: !RETURN_CHOICE!
 	set Chosen_TANK_MODEL=!RETURN_CHOICE!
 )
 
@@ -158,19 +167,90 @@ for /F "usebackq tokens=1,2,3,4 delims=," %%R in ("%database%") do (
 		if %%S==!Chosen_TANK_SERIES! (
 			if %%T==!chosen_TANK_MODEL! (
 				REM echo New Tank Selected: !Chosen_%passed_array.name%! - %%U
-				echo New Tank Selected: !Chosen_TANK_MODEL! - %%U
+				echo.ORIGINAL PLAYER UNIT: !Current_Tank_Unit!
+				echo.NEW UNIT SELECTED   : !Chosen_TANK_MODEL! - %%U
 				set Chosen_TANK_GAMEID=%%U
 			)
 		)
 	)
 )
 REM ********* Change Tank in Tank Gunnery Range_scripts.engscr *********
-call :FIND_REPLACE !Chosen_TANK_GAMEID!
-
+REM call :FIND_REPLACE !Chosen_TANK_GAMEID!
+call :REPLACE_WITH_SELECTION !Chosen_TANK_GAMEID!
 
 goto END_MAIN
 
 REM ********* FUNCTIONS *********
+:FIND_CURRENT_TANK_INFO
+
+	set marker=user_human(){
+
+    for /f "delims=" %%i in ('type "!textFile!"') do (
+        set "line=%%i"
+
+		REM now that we have the platoon name, look for the platoon_name in another line
+		if NOT [!player_platoon!]==[] (
+			REM if player platoon already known, find the tank used for this platoon 
+			for /f "tokens=1,2 delims=," %%Y in ("!line!") do (
+				set line_item1=%%Y
+				set line_item1=!line_item1:	=!
+				REM extract current tank id
+				if [!line_item1!]==[!player_platoon!] (
+					set my_tank_id=%%Z
+					REM echo.My Tank ID: !my_tank_id!
+					call :LOOKUP_TANK_NAME_BY_ID !my_tank_id!
+					goto :eof
+				)
+			)
+		)
+
+		REM look for user_human line and extract platoon name
+		for /f "tokens=1 delims=:" %%z in ('echo %%i ^| findstr /R /C:".*%marker%.*"') do (
+			REM return platoon
+			set "platoon_line=%%z"
+			REM strip the front marker "user_human(){"
+			call set platoon_line=%%platoon_line:!!marker!!=%%
+			for /f "delims=:" %%B in ("!platoon_line!") do call set player_platoon=%%B
+		)
+    )
+goto :eof	
+
+:REPLACE_WITH_SELECTION
+
+    set "replace=%1"
+	set marker=user_human(){
+	set /a counter=1
+
+	set "temp_file=!textFile!.temp"
+
+    for /f "delims=" %%i in ('type "!textFile!" ^& break ^> "!temp_file!" ') do (
+        set "line=%%i"
+
+		REM now that we have the platoon name, look for the platoon_name in another line
+		if NOT [!player_platoon!]==[] (
+			REM echo I am in the loop! 
+			for /f "tokens=1,2 delims=," %%Y in ("!line!") do (
+				set line_item1=%%Y
+				set line_item1=!line_item1:	=!
+				REM extract current tank id
+				if [!line_item1!]==[!player_platoon!] (
+					echo.
+					echo.ORIGINAL  :!line!
+					set line=!line:%%Z= %replace%!
+					set "player_platoon="
+					echo.CHANGED TO:!line!
+					echo.
+					REM pause
+				)
+			)
+		)
+
+        >>"!temp_file!" echo !line!
+		set /a counter=!counter!+1
+    )
+
+goto :eof
+
 :FIND_REPLACE
 
     set "search=new_tank"
@@ -193,6 +273,8 @@ REM ********* FUNCTIONS *********
 					set platoon=!platoon:	=!
 
 					if [!platoon!]==[!player_platoon!] (
+						set "Current_Tank_ID=%%Q"
+						echo.%%Q : !Current_Tank_ID!
 					call :LOOKUP_TANK_NAME_BY_ID %%Q
 
 					set line=!line:%%Q= %replace%!
@@ -223,10 +305,12 @@ for /F "usebackq tokens=3,4 delims=," %%c in ("%database%") do (
 	REM only process items if token 1 & 2 matches
 	if "%%d"=="%1" (
 		set current_tank_name=%%c
-		echo.Current Tank : %%c - %1
+		set "Current_Tank_Unit=%%c - %1 ^(platoon id = !player_platoon!^)"
 	)
 )
-
+if [!current_tank_name!]==[] (
+	set "Current_Tank_Unit=%1 ^(platoon id = !player_platoon!^)"
+)
 goto :eof
 
 :LCase
@@ -240,10 +324,10 @@ goto :eof
 
 SET _UCase=A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 SET _LCase=a b c d e f g h i j k l m n o p q r s t u v w x y z
-SET _Lib_UCase_Tmp=!%1!
+SET "_Lib_UCase_Tmp=!%1!"
 IF /I "%0"==":UCase" SET _Abet=%_UCase%
 IF /I "%0"==":LCase" SET _Abet=%_LCase%
-FOR %%Z IN (%_Abet%) DO SET _Lib_UCase_Tmp=!_Lib_UCase_Tmp:%%Z=%%Z!
+FOR %%Z IN (%_Abet%) DO SET "_Lib_UCase_Tmp=!_Lib_UCase_Tmp:%%Z=%%Z!"
 echo.%_Lib_UCase_Tmp%
 GOTO:EOF
 
@@ -261,13 +345,24 @@ set passed.message=%3
 
 REM show Mission Name
 
-FOR /F %%N IN ("!textFile!") DO SET mission=%%~nN
+FOR %%N IN ("!textFile!") DO SET "mission=%%~nN"
 set mission=!mission:_= !
 set mission=!mission:scripts=mission!
 call :UCase mission
 echo.
-set title_str=!Chosen_COUNTRY! !Chosen_TANK_SERIES!
-echo.!title_str!
+
+REM show current tank unit
+if [!Current_Tank_Unit!]==[] (
+	set "Current_Tank_Unit=!Current_Tank_ID!"
+	)
+echo.Current Player Unit: !Current_Tank_Unit!
+echo.
+
+REM Show the currently selected Country and Tank Series
+if NOT [!Chosen_COUNTRY!]==[] (
+	set "title_str=!Chosen_COUNTRY! !Chosen_TANK_SERIES!"
+	echo.!title_str!
+)
 echo.
 
 REM Strip quotes and present message
@@ -275,7 +370,9 @@ echo %passed.message:"=%
 
 for /L %%K in (0,1,%passed_array.count%) do (
 	if NOT [!%passed_array.name%[%%K]!] == [] (
+		if NOT [!%passed_array.name%[%%K]!] == [dummy] (
  		echo %%K: !%passed_array.name%[%%K]!
+		)
 	)
 )
 echo.
@@ -342,7 +439,9 @@ Exit /B 5
 
 move /y "!textFile!" "!textFile!.bak"
 move /y "!temp_file!" "!textFile!"
+echo.
 echo Backup file: !textFile!.bak
+echo.
 pause
 endlocal
 
