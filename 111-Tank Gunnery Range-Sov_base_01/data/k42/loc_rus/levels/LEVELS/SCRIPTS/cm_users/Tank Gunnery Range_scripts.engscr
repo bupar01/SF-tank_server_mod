@@ -1,0 +1,76 @@
+#include "..\ai_defs.engcfg"
+
+i_divisions:divisions()
+{
+user_human(){tnk_plat1:AA, wp_gunner, 1;}
+
+divisions()
+{
+	tnk_plat1, rkka_mtank1, rt1, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targT1, wer_htann5, targ1, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targT2, wer_htann5, targ2, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targTrk1, wer_platoon_opel, targ3, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targTrk2, wer_platoon_opel, targ4, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targT3, wer_htann5, targ5, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	gcolumn1, wer_platoon_bmw2, gcolumn1, -1, 2, column, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	gcolumn2, wer_platoon_gren4, gcolumn2, -1, 2, column, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	gcolumn3, wer_platoon_opel2, gcolumn3, -1, 2, column, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targT4, wer_htann5, targ6, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targT5, wer_htann5, targ7, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targT6, wer_htann5, targ8, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	targT7, wer_htann5, targ9, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	trk3, wer_platoon_ltrucg1, targ10, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	trk4, wer_platoon_bmw2, targ10, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+	trk5, wer_platoon_opel2, targ10, -1, 2, rkka_attacka, 1, 1, 0.2, 1.0, 1.0, 0x2, rkka_comp_1, 0.0;
+}
+}
+
+i_scriptman:scriptman()
+{
+column()
+{
+
+	ext, ai_form, 2;
+	ext, ai_setstate, 0, 0x1;
+	ext, ai_move, column_001, false, -1, 15;
+	ext, ai_move, column_002, false, -1, 15;
+	ext, ai_move, column_003, false, -1, 15;
+}
+
+dummy()
+{
+
+}
+
+}
+
+
+i_trigman:trigman()
+{
+cs_artfire()
+{
+
+}
+
+cs_main()
+{
+
+}
+
+cs_map()
+{
+
+}
+
+cs_positions()
+{
+
+}
+
+
+triggers()
+{
+}
+}
+
+_vars() {}
