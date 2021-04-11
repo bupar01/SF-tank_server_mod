@@ -1,0 +1,20 @@
+main()
+{
+	env_arc	= envs\M04_Bereka\M04_Bereka.polypack;
+	env_desc	= M04_Bereka.poly;
+	loc_data	= scripts\cm_users\Tank Gunnery Range_loc_data.text;
+	scripts	= scripts\cm_users\Tank Gunnery Range_scripts.engscr;
+	start_hours	= 12;
+	start_minutes	= 0;
+	use_weather_def	= false;
+	weater_speed	= 0;
+	weather	= clear;
+	weather_cycle	= 480;
+	weather_file	= weather\weather_GunneryRange.engcfg;
+	weather_pos	= 0;
+	zones	= scripts\cm_users\Tank Gunnery Range_zones.engcfg;
+
+	#include "..\shared_level.engcfg"
+}
+
+_vars() {}
