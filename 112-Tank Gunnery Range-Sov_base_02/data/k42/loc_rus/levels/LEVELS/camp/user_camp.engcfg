@@ -1,6 +1,0 @@
-//Graviteam mission create system ver. 0.1
-
-user1()
-{
-	Tank Gunnery Range, Tank Gunnery Range, 1, 0, back_t01.tga, txt_cit_01, 30, txt_hist_intro, hist_map_teach, levels\levels\cm_users\Tank Gunnery Range.level;
-} //end of user1

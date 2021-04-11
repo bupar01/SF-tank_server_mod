@@ -1,9 +1,0 @@
-//список кампаний
-camp_list()
-{
-
-	//файл, блок, название+описание, кампания, спрайт картинки
-	camp\user_camp.engcfg, user1, 		txt_cm_camp_user,	false, img_user4;
-}
-
-_vars() {}
