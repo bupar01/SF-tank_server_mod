@@ -10,11 +10,11 @@ A back up is saved in the same directory the very first time you run the batch f
 
 The default mission is present in both JCM and ITM as of February 2022.
 
-##Zip archive content:
+## Zip archive content:
 
 999-TSM_v02 (Tank_Server_Mod)
 
-###Tank_Server_Mod Files:
+### Tank_Server_Mod Files:
 
 1. tankid.csv - this database holds the game tank id codes that the batch file reads (no need to touch this file). If you like to browse this file, open with a text editor or a spreadsheet program
 2. 0_tankid_change_v02.bat - windows batch file to choose and switch user tank
@@ -24,7 +24,7 @@ The default mission is present in both JCM and ITM as of February 2022.
 
 ***IMPORTANT***: The tankid.csv and 0_tankid_change_v02.bat/0_tankid_change_v02_no_color.bat files is required to be in the root directory of the game Steel Fury - Kharkov 1942.
 
-##Installation
+## Installation
 
 Place the extracted folder containing the files into JSGME's MODS folder (make sure there is no extra enclosing folder from the extraction process).
 
@@ -32,7 +32,7 @@ Activate, preferably last in your lists of mods, with JSGME.
 
 The tankid.csv and 0_tankid_change_v02.bat/0_tankid_change_v02_no_color.bat files should now appear in the game root directory
 
-##How to use
+## How to use
 
 Double-click the 0_tankid_change_v02.bat file in the Steel Fury - Kharkov 1942 game root folder and follow prompts to select country, tank series and the tank model. You can type in a unit if you already have its code instead of using the menu system.
 
@@ -40,17 +40,17 @@ The command prompt window can be closed once the replacement is confirmed.
 
 Run Steel Fury and play the changed mission.
 
-###Default Mission
+### Default Mission
 
 The default mission, Firing Ground 1, is located within the GMP 1.47 in JCM and STA mods and within the Training Missions in ITM. In ITM, it is hidden at first until you get through the earlier missions but can be bypassed with the all-missions-open module.
 
-###How to use to change other mission or campaign files
+### How to use to change other mission or campaign files
 
 Drag-and-drop a mission or campaign script file on the 0_tankid_change_v02.bat file. The mission or campaign script files are located in different folders under "data\k42\loc_rus\levels\LEVELS\SCRIPTS\".
 
 Follow prompts to select country, tank series and the tank model. The command prompt window can be closed once the replacement is confirmed.
 
-###How to restore the original mission script
+### How to restore the original mission script
 
 A backup of the original script will be created in the same mission script folder the first time the mission is changed.
 
