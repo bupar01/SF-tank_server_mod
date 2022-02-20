@@ -12,8 +12,7 @@ set Chosen_TANK_SERIES=""
 set Chosen_TANK_MODEL=""
 set Chosen_TANK_GAMEID=""
 
-
-for /F "tokens=1 delims=," %%i in (tankid.csv) do (
+for /F "tokens=1 delims=," %%i in (sample.csv) do (
 REM 	@echo !index! - %%i
 	if NOT [%%i]==[] (
 
@@ -42,7 +41,7 @@ set /a TankSeries_index=0
 set /a TankSeries_match=0
 
 
-for /F "tokens=1-3 delims=," %%p in (tankid.csv) do (
+for /F "tokens=1-3 delims=," %%p in (sample.csv) do (
 
 	REM only process items in token 2 if token 1 matches
 	if %%p==!Chosen_COUNTRY! (
@@ -65,7 +64,7 @@ REM ********* 3rd level menu *********
 
 set /a TankModel_index=0
 
-for /F "tokens=1,2,3 delims=," %%V in (tankid.csv) do (
+for /F "tokens=1,2,3 delims=," %%V in (sample.csv) do (
 	REM only process items if token 1 & 2 matches
 	if %%V==!Chosen_COUNTRY! (
 		if %%W==!Chosen_TANK_SERIES! (
@@ -79,53 +78,20 @@ if %errorlevel% GTR 0 exit /b
 
 REM ********* Get Tank Game ID *********
 
-for /F "tokens=1,2,3,4 delims=," %%R in (tankid.csv) do (
+for /F "tokens=1,2,3,4 delims=," %%R in (sample.csv) do (
 	REM only process items if token 1 & 2 matches
 	if %%R==!Chosen_COUNTRY! (
 		if %%S==!Chosen_TANK_SERIES! (
 			if %%T==!chosen_TANK_MODEL! (
 				echo Tank Game ID: %%U
-REM ********* Change Tank in Tank Gunnery Range_scripts.engscr *********
-				call :FIND_REPLACE %%U %player_platoon%
 			)
 		)
 	)
 )
 
-
-
-
 goto END_MAIN
 
 REM ********* FUNCTIONS *********
-:FIND_REPLACE
-REM    setlocal enableextensions disabledelayedexpansion
-
-    set "search=new_tank"
-    set "replace=%1"
-
-    set "textFile=Tank_Gunnery_Range_scripts.engscr.template"
-
-    for /f "delims=" %%i in ('type "%textFile%" ^& break ^> "Tank Gunnery Range_scripts.engscr" ') do (
-        set "line=%%i"
-
-		REM look for user_human line
-		for /f "delims=" %%z in ('echo %%i ^| findstr /R /C:".*user_human.*"') do (
-			REM return platoon
-			set "player_platoon=%%z"
-			)
-		
-		REM if player platoon found, look for platoon line and change tank
-	
-	
-		setlocal enabledelayedexpansion
-        set "line=!line:%search%=%replace%!"
-        >>"Tank Gunnery Range_scripts.engscr" echo(!line!
-        endlocal
-    )
-goto :eof	
-
-
 
 :CREATE_MENU
 REM Function to create user input menu
@@ -178,8 +144,8 @@ Exit /B 5
 
 :END_MAIN
 
-echo My platoon: %player_platoon%
 endlocal
+
 
 pause
 

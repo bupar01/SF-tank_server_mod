@@ -1,16 +1,13 @@
 @echo off
-setlocal ENABLEDELAYEDEXPANSION
-
 REM This script file is to be placed in the game directory of Steel Fury - Kharkov 1942
 REM together with the tankid.csv database file
 REM Default is to work with Tank Gunnery Mod
 REM other .engscr files can be processed by drag and drop onto batch file
 
+setlocal ENABLEDELAYEDEXPANSION
+
 set script_path=%~dp0
-set database=%script_path%tankid.csv
-
-set "dropped_file=%1"
-
+set database=!script_path!tankid.csv
 
 REM make sure database file is available
 if NOT EXIST "%database%" (
@@ -23,7 +20,7 @@ if NOT EXIST "%database%" (
 if [%1]==[] (
 	REM No file dropped, use default
 	REM Default file to process is the Tank Gunnery Range mod
-	set "textFile=%script_path%data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_users\Tank Gunnery Range_scripts.engscr"
+	set "textFile=!script_path!data\k42\loc_rus\levels\LEVELS\SCRIPTS\cm_users\Tank Gunnery Range_scripts.engscr"
 	echo !textFile!
 	REM First order is to make sure that file exists
 	if EXIST "!textFile!" (
@@ -47,15 +44,17 @@ if [%1]==[] (
 	)
 )
 
-:RESTART
-
 :MAIN
 
 set /a index=0
 set /a match=0
 set COUNTRY[0]=""
-
-
+set TANK_SERIES[0]=""
+set TANK_MODEL[0]=""
+set Chosen_COUNTRY=""
+set Chosen_TANK_SERIES=""
+set Chosen_TANK_MODEL=""
+set Chosen_TANK_GAMEID=""
 
 for /F "usebackq tokens=1 delims=," %%i in ("%database%") do (
 REM 	@echo !index! - %%i
@@ -72,24 +71,19 @@ REM 	@echo !index! - %%i
 			set /a index+=1
 		)
 		set /a match=0
+	
+		
 	)
 )
-set /a index-=1
 
-:COUNTRY_SELECT
 call :CREATE_MENU COUNTRY !index! "Choose Country:"
-if %errorlevel% GTR 0 (
-	ver > nul
-	goto :COUNTRY_SELECT
-) else (
-	echo COUNTRY=!RETURN_CHOICE!
-	set Chosen_COUNTRY=!RETURN_CHOICE!
-)
+if %errorlevel% GTR 0 exit /b
+
 REM ********* 2nd level menu *********
-set TANK_SERIES[0]=""
+
 set /a TankSeries_index=0
 set /a TankSeries_match=0
-set Chosen_TANK_SERIES=""
+
 
 for /F "usebackq tokens=1-3 delims=," %%p in ("%database%") do (
 
@@ -107,24 +101,12 @@ for /F "usebackq tokens=1-3 delims=," %%p in ("%database%") do (
 		set /a TankSeries_match=0
 	)
 )
-set /a TankSeries_index-=1
-
-:TANK_SERIES_SELECT
-echo TankSeries Index: !TankSeries_index!
-call :CREATE_MENU TANK_SERIES !TankSeries_index! "Choose Tank Series:" COUNTRY_SELECT
-if %errorlevel% GTR 0 (
-	ver > nul
-	goto :TANK_SERIES_SELECT
-) else (
-	echo TANK SERIES: !RETURN_CHOICE!
-	set Chosen_TANK_SERIES=!RETURN_CHOICE!
-)
+call :CREATE_MENU TANK_SERIES !TankSeries_index! "Choose Tank Series:"
+if %errorlevel% GTR 0 exit /b
 
 REM ********* 3rd level menu *********
-set TANK_MODEL[0]=""
+
 set /a TankModel_index=0
-set Chosen_TANK_MODEL=""
-set Chosen_TANK_GAMEID=""
 
 for /F "usebackq tokens=1,2,3 delims=," %%V in ("%database%") do (
 	REM only process items if token 1 & 2 matches
@@ -135,19 +117,8 @@ for /F "usebackq tokens=1,2,3 delims=," %%V in ("%database%") do (
 		)
 	)
 )
-set /a TankModel_index-=1
-
-:TANK_MODEL_SELECT
-echo TankModels Index: !TankModel_index!
-call :CREATE_MENU TANK_MODEL !TankModel_index! "Choose Tank Model:" TANK_SERIES_SELECT
-
-if %errorlevel% GTR 0 (
-	ver > nul
-	goto :TANK_MODEL_SELECT
-) else (
-	echo TANK MODEL: !RETURN_CHOICE!
-	set Chosen_TANK_MODEL=!RETURN_CHOICE!
-)
+call :CREATE_MENU TANK_MODEL !TankModel_index! "Choose Tank Model:"
+if %errorlevel% GTR 0 exit /b
 
 REM ********* Get Tank Game ID *********
 
@@ -156,8 +127,7 @@ for /F "usebackq tokens=1,2,3,4 delims=," %%R in ("%database%") do (
 	if %%R==!Chosen_COUNTRY! (
 		if %%S==!Chosen_TANK_SERIES! (
 			if %%T==!chosen_TANK_MODEL! (
-				REM echo New Tank Selected: !Chosen_%passed_array.name%! - %%U
-				echo New Tank Selected: !Chosen_TANK_MODEL! - %%U
+				echo New Tank Selected: !Chosen_%passed_array.name%! - %%U
 				set Chosen_TANK_GAMEID=%%U
 			)
 		)
@@ -244,12 +214,11 @@ REM Param1: array name
 REM Param2: size of array
 REM Param3: Message Text
 
-
 set passed_array.name=%1
 set passed_array.count=%2
 set passed.message=%3
 
-echo %passed_array.count%
+
 
 REM Strip quotes and present message
 echo %passed.message:"=%
@@ -259,68 +228,32 @@ for /L %%K in (0,1,%passed_array.count%) do (
  		echo %%K: !%passed_array.name%[%%K]!
 	)
 )
-echo.
-echo R: Restart
 echo X: Exit
-set /a limit=%2
-echo.
-echo Acceptable values 0-!limit!
+
 
 SET /P M=Make Choice, then press ENTER:
-cls
 
 if /I "%M%"=="X" (
-	exit
+	echo Requested to Exit
+	REM pause
+	goto setError
 ) else (
 	REM Parse entry for out-of-range values
-	if NOT %M% GTR %passed_array.count% (
+	if NOT %M% GEQ %passed_array.count% (
 		if NOT %M% LSS 0 (
-			REM set Chosen_%passed_array.name%=!%passed_array.name%[%M%]!
-			REM echo Chosen !Chosen_%passed_array.name%!
-			REM echo %M%
 			set Chosen_%passed_array.name%=!%passed_array.name%[%M%]!
-			set RETURN_CHOICE=!%passed_array.name%[%M%]!
+			REM echo Chosen !Chosen_%passed_array.name%!
 			goto :eof
 		)
 	)
 )
-REM Check if there is a previous menu level if P is pressed
-if /I "%M%"=="R" (
-	if defined COUNTRY[0] (
-		call :CLEAR_ARRAY COUNTRY
-	)
-	if defined TANK_SERIES[0] (
-		call :CLEAR_ARRAY TANK_SERIES
-	)
-	if defined TANK_MODEL[0] (
-		call :CLEAR_ARRAY TANK_MODEL
-	)
-REM	call :CLEAR_ARRAY COUNTRY
-REM		call :CLEAR_ARRAY TANK_SERIES
-REM		call :CLEAR_ARRAY TANK_MODEL
-	endlocal
-	goto :RESTART
-
-)
 echo Invalid Choice!
-pause
 goto setError
 
 goto :eof
 
-:CLEAR_ARRAY
-set array.name=%1
-set /a clear_index=0
-
-for /f "delims=[=]" %%a in ('set %array.name%[') do (
-	set "%array.name%[!clear_index!]="
-	set /a clear_index+=1
-)
-
-goto:eof
-
 :setError
-
+endlocal
 Exit /B 5
 
 
@@ -334,6 +267,4 @@ move /y "!temp_file!" "!textFile!"
 echo Backup file: !textFile!.bak
 pause
 endlocal
-
-:_end_program
-exit
+exit /b
