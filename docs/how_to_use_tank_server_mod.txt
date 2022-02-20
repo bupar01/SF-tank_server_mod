@@ -39,6 +39,11 @@ The command prompt window can be closed once the replacement is confirmed.
 
 Run Steel Fury and play the changed mission.
 
+Default Mission
+===============
+
+The default mission, Firing Ground 1, is located within the GMP 1.47 in JCM and STA mods and within the Training Missions in ITM. In ITM, it is hidden at first until you get through the earlier missions but can be bypassed with the all-missions-open module.
+
 How to use to change other mission or campaign files
 ====================================================
 
