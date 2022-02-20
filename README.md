@@ -12,7 +12,7 @@ The default mission is present in both JCM and ITM as of February 2022.
 
 ## Zip archive content:
 
-999-TSM_v02 (Tank_Server_Mod)
+z-TSM_v02 (Tank_Server_Mod)
 
 ### Tank_Server_Mod Files:
 
