@@ -1,18 +1,18 @@
 Tank Server Mod version 02 changes
 ==================================
 
-ITM and JCM have evolved over the years. The tankid.csv database has not kept up to the new vehicles or platoons introduced. This batch file update of the Tank Server Mod allows users to workaround this limitation with some bug fixes and UI improvements.
+ITM and JCM have evolved over the years. The tankid.csv database has not kept up with the new vehicles or platoons introduced. This update of the Tank Server Mod allows users to workaround this limitation with some bug fixes and UI improvements.
 
-The included Excel spreadsheet in the docs folder lists the vehicle codes and differences between the JCM,STA and ITM mods.
+The included Excel spreadsheet in the docs folder lists the in-game vehicle codes and differences between the JCM,STA and ITM mods.
 
 Summary of changes:
 
-1. Manual in-game vehicle/platoon code entry is an alternative to using the menu system to overcome the limitations of the out-dated tankid.csv database as well as more refined selection of not just tanks but platoons.
+1. Manual in-game vehicle/platoon code entry is an alternative to the menu selection system to overcome the limitations of the out-dated tankid.csv database, as well as more refined selection of not just tanks, but also platoons.
 
-2. A restore original script option has been added to make it more easy to go back to the default. You may also use JSGME to deactivate and re-activate the JCM, STA or ITM mods to overwrite any changes too.
+2. A "restore original script" option has been added to make it more easy to go back to the default. An alternative to using this option if you have lose track of all the changes you have made, use JSGME to deactivate and re-activate the JCM, STA or ITM mods to overwrite any changes.
 
 3. Added color highlights to the UI for better visibility. This only works for Windows 10 or later users. Users of earlier Windows versions, please use the _no_color version of the batch file.
 
-4. The Firing Ground 1 mission is now the default mission the batch file will look for when double-clicked and no script file has been dropped on it. This mission is present in the JCM mod, in the GMP 1.47 module of the STA mod and in the Training Missions of the ITM mod.
+4. The Firing Ground 1 mission is now the default mission. The batch file will use this mission when double-clicked and no script file has been dropped on it. This mission is present in the JCM mod, in the GMP 1.47 module of the STA mod and in the Training Missions of the ITM mod.
 
 2022-02-20
