@@ -10,9 +10,9 @@ A back up is saved in the same directory the very first time you run the batch f
 
 The default mission is present in both JCM and ITM as of February 2022.
 
-## Zip archive content:
+## Zip archive:
 
-z-TSM_v02 (Tank_Server_Mod)
+SF-tank_server_mod.zip
 
 ### Tank_Server_Mod Files:
 
