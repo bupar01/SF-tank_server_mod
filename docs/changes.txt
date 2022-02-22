@@ -11,8 +11,8 @@ Summary of changes:
 
 2. A "restore original script" option has been added to make it more easy to go back to the default. An alternative to using this option if you have lose track of all the changes you have made, use JSGME to deactivate and re-activate the JCM, STA or ITM mods to overwrite any changes.
 
-3. Added color highlights to the UI for better visibility. This only works for Windows 10 or later users. Users of earlier Windows versions, please use the _no_color version of the batch file.
+3. Added color highlights to the UI for better visibility. This only shows in Windows 10 or later.
 
 4. The Firing Ground 1 mission is now the default mission. The batch file will use this mission when double-clicked and no script file has been dropped on it. This mission is present in the JCM mod, in the GMP 1.47 module of the STA mod and in the Training Missions of the ITM mod.
 
-2022-02-20
+2022-02-21

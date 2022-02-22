@@ -18,11 +18,11 @@ z-TSM_v02 (Tank_Server_Mod)
 
 1. tankid.csv - this database holds the game tank id codes that the batch file reads (no need to touch this file). If you like to browse this file, open with a text editor or a spreadsheet program
 2. 0_tankid_change_v02.bat - windows batch file to choose and switch user tank
-3. 0_tankid_change_v02_no_color.bat - stripped of colored text for earlier Windows version users (Windows 7)
-4. docs\how_to_use_tank_server_mod.txt - this file
+3. docs\how_to_use_tank_server_mod.txt
+4. docs\changes.txt
 5. docs\vehicles_lists_from_different_mods.xlsx - Excel spreadsheet list of vehicle codes from different mods compared
 
-***IMPORTANT***: The tankid.csv and 0_tankid_change_v02.bat/0_tankid_change_v02_no_color.bat files is required to be in the root directory of the game Steel Fury - Kharkov 1942.
+***IMPORTANT***: The tankid.csv and 0_tankid_change_v02.bat files is required to be in the root directory of the game Steel Fury - Kharkov 1942.
 
 ## Installation
 
@@ -30,7 +30,7 @@ Place the extracted folder containing the files into JSGME's MODS folder (make s
 
 Activate, preferably last in your lists of mods, with JSGME.
 
-The tankid.csv and 0_tankid_change_v02.bat/0_tankid_change_v02_no_color.bat files should now appear in the game root directory
+The tankid.csv and 0_tankid_change_v02.bat files should now appear in the game root directory
 
 ## How to use
 
