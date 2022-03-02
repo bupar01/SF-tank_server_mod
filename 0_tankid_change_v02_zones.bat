@@ -58,20 +58,55 @@ if defined output echo.!output!
 goto :eof
 
 :RETRIEVE_ZONE_INFO
-	REM assume contour_zone already set and identifies players assigned starting contour
-	REM assume zone file full path already set
+	REM ===============*** Added 2022-03-01 ***================
+	REM assume assigned_contour already set and identifies player's starting contour
+	REM assume zones_file_full_path already set
+	REM goal: get the zone coordinates
+	REM       assign them to !zoneX!, !zoneY!
+	REM       get number of set points in zone and place in number_of_zone_points
 	
+	REM echo zone: xx%assigned_contour%xx
 	SET "marker=%assigned_contour%"
-	SET /A counter=1
-	
+	REM echo marker: xx%marker%xx
+
 	REM get each line and parse for user assigned zone
 	for /f "delims=" %%f in ('type "!zones_file_full_path!"') do (
         set "any_line=%%f"
-	
+		
+		REM find the line containing the marker which is the user assigned contour
 		for /f "tokens=1 delims=," %%A in ('echo %%f ^| findstr /R /C:".*%marker%.*"') do (
-			echo !counter! - %%A
-			SET /A counter=counter+1
-			pause
+			REM echo "%marker%" - "%%A"
+			REM echo coordinate-x: "%%B"
+			
+			REM Now count how many items/tokens are in this line
+			set i=0
+			SET var1=!any_line!
+			REM ECHO !var1!
+			:loopprocess
+			for /F "tokens=1*" %%A in ( "!var1!" ) do (
+			  set /A i+=1
+			  set var1=%%B
+			  goto loopprocess )
+			REM echo The string contains %i% tokens.
+			REM Extract the x and y coordinates of the contour
+			REM zoneX is token 7, zoneY is token 8
+			
+			for /f "tokens=7,8 delims=," %%L in ( "!any_line!" ) do (
+				SET /A zoneX=%%L
+				SET /A zoneY=%%M
+			)
+			
+			REM each zone point has 4 comma separated numbers beginning from the 9th position
+			REM to get the number of set points, count how many numbers after the 8th position
+			REM and then divide by 4
+			REM with the start and end points, there should be at least 2 points
+			SET /A number_of_zone_points=%i%-8
+			SET /A number_of_zone_points/=4
+			echo coodinates: !zoneX!, !zoneY!
+			echo number of set points: %number_of_zone_points%
+			
+			REM Can ignore the rest of the file once the assigned zone info retrieved
+			goto:eof
 		)
 	)
 goto :eof	
@@ -98,6 +133,8 @@ goto :eof
 					REM ===============*** Added 2022-03-01 ***================
 					REM get assigned contour zone
 					set assigned_contour=%%Z
+					REM strip space
+					SET assigned_contour=!assigned_contour: =!
 					
 					REM necessary data acquired, exit function
 					goto :eof
@@ -468,7 +505,7 @@ goto :MAIN
 
 REM ===========**** Added 2022-02-28 ****===========
 
-REM **** set up variables ****
+REM **** set up mission file variables ****
 
 REM get path to mission script folder
 
@@ -483,18 +520,20 @@ ECHO Mission filename stem: %mission_file_stem%
 REM Compose zones file path & See if zone file exist
 
 SET  zones_file_full_path=%mission_path%%mission_file_stem%_zones.engcfg
-ECHO %zones_file_full_path%
+REM ECHO %zones_file_full_path%
 
-IF EXIST "%zones_file_full_path%" (
-	echo zones file found!
-) ELSE (
-	ECHO zones file not found!
+IF NOT EXIST "%zones_file_full_path%" (
+	ECHO ***Error: zones file not found! Aborting!
+	ECHO.
+	GOTO setError
 )
-pause
-CALL :RETRIEVE_ZONE_INFO
-PAUSE
 
 call :FIND_CURRENT_TANK_INFO
+
+CALL :RETRIEVE_ZONE_INFO
+
+ECHO Completed retrieval of zone info
+PAUSE
 
 :INPUT_OR_USE_MENU
 
