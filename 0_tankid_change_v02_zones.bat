@@ -57,6 +57,58 @@ if defined output echo.!output!
 
 goto :eof
 
+:SHOW_ARRAY
+	REM ===============*** Added 2022-03-02 ***================
+	REM Pass in an array and echo to output
+
+	SET Arr=%1
+	SET /A x=0
+	
+	ECHO.
+	:SymLoop
+	IF defined Arr[%x%] (
+		ECHO %x% - !Arr[%x%]!
+		SET /A x+=1
+		GOTO :SymLoop
+	) 
+	ECHO.
+goto:eof
+
+
+:CREATE_CONTOUR_ARRAY
+	REM ===============*** Added 2022-03-02 ***================
+	REM Pass in zone definition line in parameter 1 
+	REM and put all set contour points into an array
+	REM Return array in parameter 2
+	
+	ECHO %1
+	REM strip last semi-colon
+	SET var1=%~1
+	SET var1=!var1:;=!
+	SET /A x=0
+	
+	CALL :parse "!var1!"
+	
+	:parse
+	REM strip quotes
+	SET var1=%~1
+
+	for /F "tokens=1* delims=," %%a in ( "!var1!" ) do (
+		SET tmp_str=%%a
+		REM first char which is either a tab or space in the contour definition
+		SET Arr[%x%]=!tmp_str:~1!
+		REM ECHO xx!Arr[%x%]!xx
+		SET /A x+=1
+		CALL :parse "%%b"
+	)
+	CALL :SHOW_ARRAY Arr
+	ECHO Returned from show array!
+	pause
+	
+	REM %~2=zone_elements
+goto:eof
+
+
 :RETRIEVE_ZONE_INFO
 	REM ===============*** Added 2022-03-01 ***================
 	REM assume assigned_contour already set and identifies player's starting contour
@@ -104,6 +156,9 @@ goto :eof
 			SET /A number_of_zone_points/=4
 			echo coodinates: !zoneX!, !zoneY!
 			echo number of set points: %number_of_zone_points%
+			
+			ECHO !any_line!
+			CALL :CREATE_CONTOUR_ARRAY "!any_line!"
 			
 			REM Can ignore the rest of the file once the assigned zone info retrieved
 			goto:eof
