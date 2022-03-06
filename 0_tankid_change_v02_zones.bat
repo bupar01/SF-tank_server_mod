@@ -225,6 +225,7 @@ goto:eof
 		for /f "tokens=1 delims=," %%A in ('echo %%f ^| findstr /R /C:".*%marker%.*"') do (
 			REM echo "%marker%" - "%%A"
 			REM echo coordinate-x: "%%B"
+			SET "zone_definition=!any_line!"
 			
 			REM Now count how many items/tokens are in this line
 			set i=0
@@ -263,12 +264,44 @@ goto:eof
 			ECHO items count: %Contour_Points_Array_Count%
 			CALL :SHOW_2D_ARRAY "Contour_Points_Array"
 			ECHO Returned from SHOW_2D_ARRAY
-			PAUSE
+			REM PAUSE
 			
 			REM Can ignore the rest of the file once the assigned zone info retrieved
 			goto:eof
 		)
 	)
+goto :eof	
+
+
+:EXPAND_CONTOUR
+	REM User has chosen a platoon and the starting contour needs to be expanded to 
+	REM accomodate all the units
+	
+	REM default is 150 units length and 20 units deep for 3 units platoons
+	REM simple strategy is to add 4 points to the zone equal distance from the 
+	REM zone center coordinates (zoneX, zoneY) obtained above
+	
+	SET /A points1X=%zoneX%-75
+	SET /A points1Y=%zoneY%-10
+	SET /A points2X=%zoneX%-75
+	SET /A points2Y=%zoneY%+10
+	SET /A points3X=%zoneX%+75
+	SET /A points3Y=%zoneY%+10
+	SET /A points4X=%zoneX%+75
+	SET /A points4Y=%zoneY%-10
+	
+	SET points_str=, %points1X%, 0, %points1Y%,0 , %points2X%, 0, %points2Y%,0, %points3X%, 0, %points3Y%,0, %points4X%, 0, %points4Y%, 0
+	ECHO Original zone line: !zone_definition!
+	ECHO New zone definition: !zone_definition:~0,-1!%points_str%;
+	
+	REM back up and write new zone file
+	REM Back up first
+	
+	
+	REM find and replace line in zone file
+	
+	
+	pause
 goto :eof	
 
 
@@ -693,7 +726,7 @@ call :FIND_CURRENT_TANK_INFO
 CALL :RETRIEVE_ZONE_INFO
 
 ECHO Completed retrieval of zone info
-PAUSE
+REM PAUSE
 
 :INPUT_OR_USE_MENU
 
@@ -965,6 +998,17 @@ for /F "usebackq tokens=1,2,3,4 delims=," %%R in ("%database%") do (
 :WRITE_CHANGE
 REM ********* Change Tank in Tank Gunnery Range_scripts.engscr *********
 REM call :FIND_REPLACE !Chosen_TANK_GAMEID!
+
+REM Parse if Chosen_TANK_GAMEID is a platoon
+REM by testing if the _platoon_ substring is present
+
+IF NOT x%Chosen_TANK_GAMEID:_platoon_=%==x%Chosen_TANK_GAMEID% (
+	ECHO This is a platoon and may not work when replacing a single tank. 
+	ECHO Will modify zone file to expand starting contour.
+	
+	CALL :EXPAND_CONTOUR
+)
+PAUSE
 call :REPLACE_WITH_SELECTION !Chosen_TANK_GAMEID!
 
 goto END_MAIN
