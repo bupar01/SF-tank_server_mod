@@ -76,6 +76,93 @@ goto :eof
 goto:eof
 
 
+:SHOW_2D_ARRAY
+	REM ===============*** Added 2022-03-03 ***================
+	REM Pass in a global 2D array name and echo items to output
+	SETLOCAL
+	SET /A x=0
+	SET /A y=0
+
+	:SymLoop2D
+	IF defined %~1[%x%][%y%] (
+		REM ECHO Array element %x% defined
+		:SymLoop2
+		IF DEFINED %~1[%x%][%y%] (
+			ECHO %x%.%y% - !%~1[%x%][%y%]!
+			SET /A y+=1
+			GOTO :SymLoop2
+		)
+		SET /A y=0
+		SET /A x+=1
+		GOTO :SymLoop2D
+	) 
+	ECHO.
+	ENDLOCAL
+goto:eof
+
+:CREATE_POINTS_ARRAY
+	REM ===============*** Added 2022-03-03 ***================
+	REM Pass in zone definition line in parameter 1 
+	REM and put all set contour points into an array
+	REM Return array in parameter 2
+	REM Return array size in parameter 3
+	ECHO.
+	ECHO Split points into array...
+	REM strip last semi-colon
+	SET var1=%~1
+	SET var1=!var1:;=!
+	
+	REM Put array name into variable to pass into function
+	SET var2=%~2
+	
+	REM Initialize array counter
+	SET /A x=0
+	REM Initialize points counter
+	SET /A y=0
+	REM Initialize point elements counter
+	SET /A z=0
+	
+	for /F "tokens=8* delims=," %%p in ( "!var1!" ) do (
+		SET "points_str=%%q"
+	)
+	echo points_str: %points_str%
+	
+	CALL :parse_points "!points_str!"
+	goto :end_of_parse_points
+	
+	
+	:parse_points
+		REM strip quotes
+		SET var1=%~1
+		REM ECHO cc!var1!cc
+		for /F "tokens=1* delims=," %%a in ( "!var1!" ) do (
+			REM ECHO xx%%axx
+			SET tmp_str=%%a
+			REM first char which is either a tab or space in the contour definition
+			SET %var2%[%y%][%z%]=!tmp_str:~1!
+			ECHO %x% - !%var2%[%y%][%z%]!
+			SET /A x+=1
+			SET /A z+=1
+			IF "!z!"=="4" (
+				SET /A z=0
+				SET /A y+=1
+			)
+			REM ECHO %var2% - %x% - %y% - %z%
+			IF NOT [%%b]==[] (
+				REM ECHO %%b
+				CALL :parse_points "%%b"
+			)
+		)
+	goto:eof
+	
+	:end_of_parse_points
+	ECHO Number of points in contour - %y%
+	REM Return array size in parameter 3
+	SET /A %~3=%y%
+
+goto:eof
+
+
 :CREATE_CONTOUR_ARRAY
 	REM ===============*** Added 2022-03-02 ***================
 	REM Pass in zone definition line in parameter 1 
@@ -85,37 +172,35 @@ goto:eof
 
 	REM strip last semi-colon
 	SET var1=%~1
-	SET var1=!var1:;=!
+	REM SET var1=!var1:;=!
 	REM Put array name into variable to pass into function
 	SET var2=%~2
 	
 	SET /A x=0
 	
-	CALL :parse "!var1!"
-	goto :end_of_subroutine
+	CALL :parse_contour "!var1!"
+	goto :end_of_parse_contour
 	
-	:parse
+	:parse_contour
 	REM strip quotes
 	SET var1=%~1
 
-	for /F "tokens=1* delims=," %%a in ( "!var1!" ) do (
+	for /F "tokens=1* delims=,;" %%a in ( "!var1!" ) do (
 		SET tmp_str=%%a
 		REM first char which is either a tab or space in the contour definition
 		SET %var2%[%x%]=!tmp_str:~1!
 		REM ECHO xx!%var2%[%x%]!xx
 		SET /A x+=1
 		IF NOT [%%b]==[] (
-			CALL :parse "%%b"
+			CALL :parse_contour "%%b"
 		)
 	)
 	GOTO:eof
-	REM ******* End of parse function ********
-	:end_of_subroutine
+	REM ******* End of parse_contour function ********
+	:end_of_parse_contour
 
 	REM Return array size in parameter 3
 	SET /A %~3=%x%
-
-														
 	
 goto:eof
 
@@ -173,7 +258,12 @@ goto:eof
 			CALL :SHOW_ARRAY "Contour_Array"
 			ECHO Contour_Array_Count: !Contour_Array_Count!
 
- 
+			CALL :CREATE_POINTS_ARRAY "!any_line!" "Contour_Points_Array" "Contour_Points_Array_Count"
+			ECHO Returned from Create Points Array
+			ECHO items count: %Contour_Points_Array_Count%
+			CALL :SHOW_2D_ARRAY "Contour_Points_Array"
+			ECHO Returned from SHOW_2D_ARRAY
+			PAUSE
 			
 			REM Can ignore the rest of the file once the assigned zone info retrieved
 			goto:eof
