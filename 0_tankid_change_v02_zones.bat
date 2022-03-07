@@ -272,6 +272,44 @@ goto:eof
 	)
 goto :eof	
 
+:READ_FILE_AND_REPLACE
+	REM takes 3 parameters
+	REM Parameter 1: File to read
+	REM Parameter 2: Marker for target line
+	REM Parameter 3: Replacement line
+	REM Parameter 4: Output File
+	
+	REM ECHO.
+	REM ECHO TARGET: %~1
+	REM ECHO MARKER: %~2
+	REM ECHO REPLACEMENT: %~3
+	REM ECHO.
+	
+	SET "search_str=%~2"
+	
+	REM Delete temp file if already exists
+
+	IF EXIST "%~4" (
+		del /Q "%~4"
+	)
+	
+	REM read each line and copy to temp file if search_str not found
+
+    for /f "delims=" %%i in ('type "%~1" ^& break ^> "%~4" ') do (
+        set "current_line=%%i"
+
+		REM now that we have the zone name, look for the zone name in another line
+		if NOT [!current_line!]==[!current_line:%search_str%=!] (
+			REM search_str found in line! 
+			>>"%~4" echo %~3
+		) ELSE (
+			>>"%~4" echo !current_line!
+		)
+    )
+	REM ECHO finished replace
+	REM pause
+
+goto :eof
 
 :EXPAND_CONTOUR
 	REM User has chosen a platoon and the starting contour needs to be expanded to 
@@ -291,14 +329,16 @@ goto :eof
 	SET /A points4Y=%zoneY%-10
 	
 	SET points_str=, %points1X%, 0, %points1Y%,0 , %points2X%, 0, %points2Y%,0, %points3X%, 0, %points3Y%,0, %points4X%, 0, %points4Y%, 0
+	SET "expanded_user_contour=!zone_definition:~0,-1!%points_str%;"
+	
 	ECHO Original zone line: !zone_definition!
-	ECHO New zone definition: !zone_definition:~0,-1!%points_str%;
+	ECHO New zone definition: !expanded_user_contour!
 	
-	REM back up and write new zone file
-	REM Back up first
+	REM write new temporary zone file, replacing the assigned zone line
+	CALL :READ_FILE_AND_REPLACE "!zones_file_full_path!" "%assigned_contour%" "!expanded_user_contour!" "!zones_file_full_path!.temp"
+
+	REM Back up original and replace with temporary file
 	
-	
-	REM find and replace line in zone file
 	
 	
 	pause
