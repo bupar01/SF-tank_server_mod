@@ -4,9 +4,9 @@ This utility provides the user ability to change from default unit before playin
 
 This batch file works through menu selection or manual entry of an in-game unit code. Manual entry allows use of platoons/tanks missing in the attached database. Works only if missions are not packed, e.g. in Japanese Community Mod (JCM), STA or Iron Task Mod (ITM), and scripts directory readable and writable.
 
-Any selection or entry is substituted as typed into the dropped .engscr file, or, the default mission Firing Ground. Whether there is such a unit as you entered in current activated mods is not checked. Be warned! The mission may crash if you choose or enter a non-existent unit code, or, if mission specific requirements are not met by the new unit chosen, e.g. a single tank chosen when the mission is scripted for platoons and infantry.
+Any selection or entry is substituted as typed into the dropped .engscr file, or, the default mission Firing Ground. Whether there is such a unit as you entered in activated mods is not checked. The mission crashes if you choose or enter a non-existent unit code, or, if mission specific requirements are not met by the new unit chosen. You may be fired upon if you replaced a unit of conflicting alliance.
 
-A back up is saved in the same directory the very first time you run the batch file on a .engscr mission script. You can restore the original by running the batch file again and choose restore (for the default mission), or, drop the changed script with extension .engscr (not the back up file) from the mission script directory onto the batch file. The restore option will only appear if a backup is found.
+Back up is saved in the script directory. You can restore the original by running the batch file again (for the default mission) and exit without choosing a new unit. Or, drop the changed script with extension .engscr (not the back up file) from the mission script directory onto the batch file.
 
 The default mission is present in both JCM and ITM as of February 2022.
 
@@ -44,15 +44,15 @@ Run Steel Fury and play the changed mission.
 
 The default mission, Firing Ground 1, is located within the GMP 1.47 in JCM and STA mods and within the Training Missions in ITM. In ITM, it is hidden at first until you get through the earlier missions but can be bypassed with the all-missions-open module.
 
-### How to use to change other mission or campaign files
+### Can I use this for other missions?
 
-Drag-and-drop a mission or campaign script file on the 0_tankid_change_v02.bat file. The mission or campaign script files are located in different folders under "data\k42\loc_rus\levels\LEVELS\SCRIPTS\".
+Drag-and-drop a mission or campaign script file (with extension .engscr) on the 0_tankid_change_v02.bat file in the game's root directory. The mission or campaign script files are located in different folders under "data\k42\loc_rus\levels\LEVELS\SCRIPTS\".
 
-Follow prompts to select country, tank series and the tank model. The command prompt window can be closed once the replacement is confirmed.
+Type in an unit code or use the menu system as described above.
 
 ### How to restore the original mission script
 
-A backup of the original script will be created in the same mission script folder the first time the mission is changed.
+A backup of the original script will be created in the same mission script folder when the mission is changed.
 
-Run the 0_tankid_change_v02.bat file again and choose restore option will revert to the original script file for the Firing Ground Mission. If you have made changes to another mission by drag-and-drop, drop the changed script file from the mission folder onto the batch file. If a back up file is found, the restore option will be offered.
+Run the 0_tankid_change_v02.bat file again will revert to the original script file for the Firing Ground Mission when you exit without selecting a new unit. If you have made changes to another mission by drag-and-drop, drop the changed script file from the mission folder onto the batch file. If a back up file is found, it will be restored.
 
