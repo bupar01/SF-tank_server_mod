@@ -871,7 +871,7 @@ if NOT "!my_tank_id:_platoon_=!"=="!my_tank_id!" (
 )
 
 IF !colored_text! EQU true (
-	echo [96mType in in-game tank code ^(e.g. [0m wer_mtank1[96m^) or leave empty to pick from menu[0m
+	echo [96mType in in-game unit code ^(e.g.[0m wer_mtank1[96m^) or leave empty to pick from menu[0m
 ) ELSE (
 	echo Type in in-game unit code ^(e.g. wer_mtank1^) or leave empty to pick from menu
 )
