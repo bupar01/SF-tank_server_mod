@@ -64,14 +64,14 @@ goto :eof
 	REM SET Arr=%1
 	SET /A x=0
 	
-	ECHO.
+	REM ECHO.
 	:SymLoop
 	IF defined %~1[%x%] (
-		ECHO %x% - !%~1[%x%]!
+		REM ECHO %x% - !%~1[%x%]!
 		SET /A x+=1
 		GOTO :SymLoop
 	) 
-	ECHO.
+	REM ECHO.
 	ENDLOCAL
 goto:eof
 
@@ -88,7 +88,7 @@ goto:eof
 		REM ECHO Array element %x% defined
 		:SymLoop2
 		IF DEFINED %~1[%x%][%y%] (
-			ECHO %x%.%y% - !%~1[%x%][%y%]!
+			REM ECHO %x%.%y% - !%~1[%x%][%y%]!
 			SET /A y+=1
 			GOTO :SymLoop2
 		)
@@ -96,7 +96,7 @@ goto:eof
 		SET /A x+=1
 		GOTO :SymLoop2D
 	) 
-	ECHO.
+	REM ECHO.
 	ENDLOCAL
 goto:eof
 
@@ -106,8 +106,8 @@ goto:eof
 	REM and put all set contour points into an array
 	REM Return array in parameter 2
 	REM Return array size in parameter 3
-	ECHO.
-	ECHO Split points into array...
+	REM ECHO.
+	REM ECHO Split points into array...
 	REM strip last semi-colon
 	SET var1=%~1
 	SET var1=!var1:;=!
@@ -125,7 +125,7 @@ goto:eof
 	for /F "tokens=8* delims=," %%p in ( "!var1!" ) do (
 		SET "points_str=%%q"
 	)
-	echo points_str: %points_str%
+	REM echo points_str: %points_str%
 	
 	CALL :parse_points "!points_str!"
 	goto :end_of_parse_points
@@ -140,7 +140,7 @@ goto:eof
 			SET tmp_str=%%a
 			REM first char which is either a tab or space in the contour definition
 			SET %var2%[%y%][%z%]=!tmp_str:~1!
-			ECHO %x% - !%var2%[%y%][%z%]!
+			REM ECHO %x% - !%var2%[%y%][%z%]!
 			SET /A x+=1
 			SET /A z+=1
 			IF "!z!"=="4" (
@@ -156,7 +156,7 @@ goto:eof
 	goto:eof
 	
 	:end_of_parse_points
-	ECHO Number of points in contour - %y%
+	REM ECHO Number of points in contour - %y%
 	REM Return array size in parameter 3
 	SET /A %~3=%y%
 
@@ -240,30 +240,38 @@ goto:eof
 			REM Extract the x and y coordinates of the contour
 			REM zoneX is token 7, zoneY is token 8
 			
-			for /f "tokens=7,8 delims=," %%L in ( "!any_line!" ) do (
-				SET /A zoneX=%%L
-				SET /A zoneY=%%M
+			for /f "tokens=7,8,12 delims=," %%L in ( "!any_line!" ) do (
+				CALL :DROP_DECIMAL "%%L" "zoneX"
+				REM SET /A zoneX=%%L
+				REM ECHO %%L
+				REM pause
+				CALL :DROP_DECIMAL "%%M" "zoneY"
+				REM SET /A zoneY=%%M
+				REM ECHO %%M
+				REM pause
+				CALL :DROP_DECIMAL "%%N" "azimuth"
+				REM echo !azimuth!
+				REM pause
 			)
-			
 			REM each zone point has 4 comma separated numbers beginning from the 9th position
 			REM to get the number of set points, count how many numbers after the 8th position
 			REM and then divide by 4
 			REM with the start and end points, there should be at least 2 points
 			SET /A number_of_zone_points=%i%-8
 			SET /A number_of_zone_points/=4
-			echo coodinates: !zoneX!, !zoneY!
-			echo number of set points: %number_of_zone_points%
-			
-			ECHO !any_line!
+			REM echo coodinates: !zoneX!, !zoneY!, !azimuth!
+			REM echo number of set points: %number_of_zone_points%
+		
+			REM ECHO !any_line!
 			CALL :CREATE_CONTOUR_ARRAY "!any_line!" "Contour_Array" "Contour_Array_Count"
 			CALL :SHOW_ARRAY "Contour_Array"
-			ECHO Contour_Array_Count: !Contour_Array_Count!
+			REM ECHO Contour_Array_Count: !Contour_Array_Count!
 
 			CALL :CREATE_POINTS_ARRAY "!any_line!" "Contour_Points_Array" "Contour_Points_Array_Count"
-			ECHO Returned from Create Points Array
-			ECHO items count: %Contour_Points_Array_Count%
+			REM ECHO Returned from Create Points Array
+			REM ECHO items count: %Contour_Points_Array_Count%
 			CALL :SHOW_2D_ARRAY "Contour_Points_Array"
-			ECHO Returned from SHOW_2D_ARRAY
+			REM ECHO Returned from SHOW_2D_ARRAY
 			REM PAUSE
 			
 			REM Can ignore the rest of the file once the assigned zone info retrieved
@@ -328,20 +336,23 @@ goto :eof
 	SET /A points4X=%zoneX%+75
 	SET /A points4Y=%zoneY%-10
 	
-	SET points_str=, %points1X%, 0, %points1Y%,0 , %points2X%, 0, %points2Y%,0, %points3X%, 0, %points3Y%,0, %points4X%, 0, %points4Y%, 0
+	SET points_str=, %points1X%, 0, %points1Y%, !azimuth!, %points2X%, 0, %points2Y%, !azimuth!, %points3X%, 0, %points3Y%, !azimuth!, %points4X%, 0, %points4Y%, !azimuth!
 	SET "expanded_user_contour=!zone_definition:~0,-1!%points_str%;"
 	
-	ECHO Original zone line: !zone_definition!
-	ECHO New zone definition: !expanded_user_contour!
+	REM ECHO Original zone line: !zone_definition!
+	REM ECHO New zone definition: !expanded_user_contour!
 	
 	REM write new temporary zone file, replacing the assigned zone line
 	CALL :READ_FILE_AND_REPLACE "!zones_file_full_path!" "%assigned_contour%" "!expanded_user_contour!" "!zones_file_full_path!.temp"
 
 	REM Back up original and replace with temporary file
-	
-	
-	
-	pause
+	IF NOT EXIST "!zones_file_full_path!_original.bak" (
+		move /y "!zones_file_full_path!" "!zones_file_full_path!_original.bak" 1>nul
+		REM ECHO Zone file backed up.
+	)
+	move /y "!zones_file_full_path!.temp" "!zones_file_full_path!" 1>nul
+	REM ECHO Zone file changed.
+
 goto :eof	
 
 
@@ -636,6 +647,25 @@ REM pause
 SET %~2=%raw_name:_scripts=%
 goto:eof
 
+:RESTORE_ORIGINAL_BACKUP
+	REM Parameter 1: target file name
+	REM Parameter 2: backup file specific string and extension
+	
+	IF EXIST "%~1%~2" (
+		move /y "%~1%~2" "%~1" 1>nul
+	)
+
+goto :eof
+
+:DROP_DECIMAL
+	REM function to drop decimal portion of string
+	REM parameter 1: string containing decimal
+	REM parameter 2: return integer variable
+	
+	for /f "tokens=1,2 delims=." %%a in ( "%~1" ) do (
+		set /A %~2=%%a
+	)
+goto :eof
 
 REM ==== End Functions Block ====
 REM ==== ******************* ====
@@ -746,14 +776,17 @@ CALL :_GET_PATH "!textFile!" mission_path
 CALL :_GET_FILENAME_FROM_PATH "!textFile!" mission_script
 CALL :_GET_MISSION_FILE_STEM "%mission_script%" mission_file_stem
 
-ECHO Returned: %mission_path%
-ECHO Mission script: %mission_script%
-ECHO Mission filename stem: %mission_file_stem%
+REM ECHO Returned: %mission_path%
+REM ECHO Mission script: %mission_script%
+REM ECHO Mission filename stem: %mission_file_stem%
 
 REM Compose zones file path & See if zone file exist
 
 SET  zones_file_full_path=%mission_path%%mission_file_stem%_zones.engcfg
 REM ECHO %zones_file_full_path%
+
+REM see if a zone file back up is present and restore it
+CALL :RESTORE_ORIGINAL_BACKUP "%zones_file_full_path%" "_original.bak"
 
 IF NOT EXIST "%zones_file_full_path%" (
 	ECHO ***Error: zones file not found! Aborting!
@@ -761,11 +794,14 @@ IF NOT EXIST "%zones_file_full_path%" (
 	GOTO setError
 )
 
+REM see if a script file back up is present and restore it
+CALL :RESTORE_ORIGINAL_BACKUP "!textFile!" "_original.bak"
+
 call :FIND_CURRENT_TANK_INFO
 
 CALL :RETRIEVE_ZONE_INFO
 
-ECHO Completed retrieval of zone info
+REM ECHO Completed retrieval of zone info
 REM PAUSE
 
 :INPUT_OR_USE_MENU
@@ -775,50 +811,69 @@ REM Warn user of game crash if tank code does not exist in game
 
 REM show Mission Name
 
+REM pause
 FOR %%N IN ("!textFile!") DO SET "mission=%%~nN"
+
+REM pause
 set mission=!mission:_= !
+
+REM pause
 set mission=!mission:scripts=mission!
 
 call :UCase mission
 
-
 REM show current tank unit
 if [!Current_Tank_Unit!]==[] (
 	set "Current_Tank_Unit=!Current_Tank_ID!"
-	)
+)
+REM IF NOT [!my_tank_id:_platoon_=!]==[!my_tank_id!] (
+	REM SET "affirmative="
+REM ) ELSE (
+	REM SET "affirmative=not "
+REM )
+
 IF !colored_text! EQU true (
 	echo.Current Unit: [4m !Current_Tank_Unit! [0m
 ) ELSE (
 	echo.Current Unit: !Current_Tank_Unit!
 )
-echo.
+
+IF !colored_text! EQU true (
+	echo [96m-------------------------[0m
+) ELSE (
+	echo -------------------------
+)
 call :_wrap_and_echo "The batch file facilitates substitution of mission player unit through menu selection or manual entry of an in-game unit code. Manual entry allows use of platoons/tanks missing in the attached database. Works only if missions are not packed and scripts readable, e.g. in JCM, STA or ITM."
 echo.
-call :_wrap_and_echo "Any selection or entry is substituted as typed into the dropped .engscr file, or, the default mission Firing Ground. Whether there is such a unit as you entered in activated mods is not checked. The mission crashes if you choose or enter a non-existent unit code, or, if mission specific requirements are not met by the new unit chosen, e.g. a single tank chosen when the mission is scripted for platoons and infantry."
-echo. 
-call :_wrap_and_echo "Back up is saved in the script directory the very first time you run the batch file on a .engscr mission file. Restore the original by"
-call :_wrap_and_echo "1. rerunning the batch file and choose restore (for default mission)"
-call :_wrap_and_echo "2. or drop the changed .engscr (not the back up file) from the mission script directory onto the batch file."
-IF !colored_text! EQU true (
-	call :_wrap_and_echo "[4mThe restore option will only appear below if a backup is found[0m."
-) ELSE (
-	call :_wrap_and_echo "The restore option will only appear below if a backup is found."
-)
+call :_wrap_and_echo "Any selection or entry is substituted as typed into the dropped .engscr file, or, the default mission Firing Ground. Whether there is such a unit as you entered in activated mods is not checked. The mission crashes if you choose or enter a non-existent unit code, or, if mission specific requirements are not met by the new unit chosen. You may be fired upon if you replaced a unit of conflicting alliance."
 echo.
+call :_wrap_and_echo "Back up is saved in the script directory. Restore is automatic:"
+call :_wrap_and_echo "1. when you rerun the batch file (for default mission), whether you choose a new unit or exit without choosing an unit."
+call :_wrap_and_echo "2. or drop the changed .engscr (not the back up file) from the mission script directory onto the batch file."
 
+IF !colored_text! EQU true (
+	echo [96m-------------------------[0m
+) ELSE (
+	echo -------------------------
+)
 REM if a backup file is found, offer option to restore
-IF EXIST "!textFile!_original.bak" (
-	IF !colored_text! EQU true (
-		echo [96mRestore backup - press[0m R
-	) ELSE (
-		echo Restore backup - press R.
-	)
+REM IF EXIST "!textFile!_original.bak" (
+	REM IF !colored_text! EQU true (
+		REM echo [96mRestore backup - press[0m R
+	REM ) ELSE (
+		REM echo Restore backup - press R.
+	REM )
+REM )
+
+if NOT "!my_tank_id:_platoon_=!"=="!my_tank_id!" (
+	call :_wrap_and_echo "Current unit (!my_tank_id: =!) is!affirmative! a platoon. Menu only provides single vehicle units. You may want to try entering a platoon unit manually."
+	ECHO.
 )
 
 IF !colored_text! EQU true (
 	echo [96mType in in-game tank code ^(e.g. [0m wer_mtank1[96m^) or leave empty to pick from menu[0m
 ) ELSE (
-	echo Type in in-game tank code ^(e.g. wer_mtank1^) or leave empty to pick from menu
+	echo Type in in-game unit code ^(e.g. wer_mtank1^) or leave empty to pick from menu
 )
 echo.
 
@@ -834,17 +889,22 @@ IF not defined Z set "Z=0"
 REM user chose the restore option
 IF /I "%Z%"=="R" (
 	IF EXIST "!textFile!_original.bak" (
-		move /y "!textFile!_original.bak" "!textFile!"
+		REM move /y "!textFile!_original.bak" "!textFile!"
+		CALL :RESTORE_ORIGINAL_BACKUP "!textFile!" "_original.bak"
 		echo.
 		IF !colored_text! EQU true (
-			echo [96mRestored^^![0m
+			echo [96mScript file restored^^![0m
 		) ELSE (
-			echo Restored^^!
+			echo Script file restored^^!
 		)
 	) ELSE (
 		echo.
 		echo Something is wrong^^! Back up file not found^^!
 		echo.
+	)
+	REM Back up original and replace with temporary file
+	IF EXIST "!zones_file_full_path!_original.bak" (
+		move /y "!zones_file_full_path!_original.bak" "!zones_file_full_path!" 1>nul
 	)
 	echo.
 	echo Press any key to exit.
@@ -1043,12 +1103,14 @@ REM Parse if Chosen_TANK_GAMEID is a platoon
 REM by testing if the _platoon_ substring is present
 
 IF NOT x%Chosen_TANK_GAMEID:_platoon_=%==x%Chosen_TANK_GAMEID% (
-	ECHO This is a platoon and may not work when replacing a single tank. 
-	ECHO Will modify zone file to expand starting contour.
 	
+	REM if this is a platoon, adjust contour to prevent
+	REM different units stacked on top of each other
+	REM resulting in toppled vehicles
 	CALL :EXPAND_CONTOUR
 )
-PAUSE
+
+REM Change _scripts.engscr
 call :REPLACE_WITH_SELECTION !Chosen_TANK_GAMEID!
 
 goto END_MAIN
@@ -1068,11 +1130,14 @@ REM if filename_original.bak already there, just overwrite
 IF NOT EXIST "!textFile!_original.bak" (
 	echo.
 	echo Backing up to "!textFile!_original.bak" before copying.
-	move /y "!textFile!" "!textFile!_original.bak"
-
+	move /y "!textFile!" "!textFile!_original.bak" 1>nul
+	REM add timeout for Windows Explorer to catch up with updating 
+	REM file names if directory to mission files is open
+	timeout /t 2 >nul
 )
 REM activate the modded file
-move /y "!temp_file!" "!textFile!"
+move /y "!temp_file!" "!textFile!" 1>nul
+
 echo.
 echo Enjoy^^! Press any key to exit.
 echo.
